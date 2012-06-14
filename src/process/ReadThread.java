@@ -9,7 +9,10 @@ public class ReadThread extends Thread {
 	super(str);
     }
     public void run() {
-	for (int i = 0; i < 10; i++) {
+        int i = 0;
+        Millisecond start = new Millisecond();
+	while(true) {
+            i++;
 	    System.out.println(i + " " + stale.lastValue);
             
             
@@ -17,13 +20,12 @@ public class ReadThread extends Thread {
             stale.lastValue = stale.lastValue * factor;
             final Millisecond now = new Millisecond();
             System.out.println("Now = " + now.toString());
-            stale.series.add(new Millisecond(), stale.lastValue);
+            stale.series.addOrUpdate(new Millisecond(), stale.lastValue);
             
             
             try {
-		sleep((int)(Math.random() * 1000));
+		sleep((int)(Math.random() * 100));
 	    } catch (InterruptedException e) {}
 	}
-	System.out.println("DONE! " + getName());
     }
 }
