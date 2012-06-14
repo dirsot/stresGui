@@ -4,32 +4,96 @@
  */
 package stresgui;
 
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.util.Rotation;
 
-/**
- *
- * @author stive
- */
+import process.*;
+
 public class mainForm extends javax.swing.JFrame {
 
     /**
      * Creates new form mainForm
      */
     final JFileChooser fc = new JFileChooser();
-    Logger LOG = Logger.getLogger("MyLog");
+    static final Logger LOG = Logger.getLogger("MyLog");
     int drawingSpeed = 1;
-    
+    Stale stale = new Stale();
     public mainForm() throws IOException {
+        
         initComponents();
-        LOG.addHandler(new FileHandler("/home/stive/Desktop/logFile.log",true));
+        LOG.addHandler(new FileHandler("./logFile.log",true));
         LOG.setLevel(Level.ALL);
+        stale.series = new TimeSeries("Random Data", Millisecond.class);
+        final TimeSeriesCollection dataset = new TimeSeriesCollection(stale.series);
+        final JFreeChart chart = createChart(dataset);
+        
+        final ChartPanel chartPanel = new ChartPanel(chart);
+        final JButton button = new JButton("Add New Data Item");
+        button.setActionCommand("ADD_DATA");
+        button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionPerformedButton(evt);
+            }
+        });
+        new ReadThread("Fiji").start();
+        
+        final JPanel content = new JPanel(new BorderLayout());
+        content.add(chartPanel);
+        content.add(button, BorderLayout.SOUTH);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        setContentPane(content);
+
     }
 
+    public void actionPerformedButton(final ActionEvent e) {
+        if (e.getActionCommand().equals("ADD_DATA")) {
+            final double factor = 0.90 + 0.2 * Math.random();
+            stale.lastValue = stale.lastValue * factor;
+            final Millisecond now = new Millisecond();
+            System.out.println("Now = " + now.toString());
+            stale.series.add(new Millisecond(), stale.lastValue);
+        }
+    }
+    
+        private JFreeChart createChart(final XYDataset dataset) {
+        final JFreeChart result = ChartFactory.createTimeSeriesChart(
+            "Dynamic Data Demo", 
+            "Time", 
+            "Value",
+            dataset, 
+            true, 
+            true, 
+            false
+        );
+        final XYPlot plot = result.getXYPlot();
+        ValueAxis axis = plot.getDomainAxis();
+        axis.setAutoRange(true);
+        axis.setFixedAutoRange(60000.0);  // 60 seconds
+        axis = plot.getRangeAxis();
+        axis.setRange(0.0, 200.0); 
+        return result;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,6 +103,7 @@ public class mainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -53,6 +118,19 @@ public class mainForm extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(226, 237, 240));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 376, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 222, Short.MAX_VALUE)
+        );
 
         jMenu1.setText("Plik");
 
@@ -125,11 +203,17 @@ public class mainForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 273, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -226,6 +310,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
