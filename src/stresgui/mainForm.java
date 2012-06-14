@@ -5,7 +5,6 @@
 package stresgui;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -19,14 +18,11 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.util.Rotation;
 
 import process.*;
 
@@ -37,7 +33,6 @@ public class mainForm extends javax.swing.JFrame {
      */
     final JFileChooser fc = new JFileChooser();
     static final Logger LOG = Logger.getLogger("MyLog");
-    int drawingSpeed = 1;
     Stale stale = new Stale();
     public mainForm() throws IOException {
         
@@ -238,25 +233,25 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        drawingSpeed = 1;
+        stale.drawingSpeed = 1;
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        drawingSpeed = 2;
+        stale.drawingSpeed = 2;
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        drawingSpeed = 5;
+        stale.drawingSpeed = 5;
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        drawingSpeed = 10;
+        stale.drawingSpeed = 10;
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main() {
         /*
          * Set the Nimbus look and feel
          */

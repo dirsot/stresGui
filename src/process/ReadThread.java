@@ -24,7 +24,7 @@ public class ReadThread extends Thread {
             
             
             try {
-		sleep((int)(Math.random() * 100));
+		sleep((int)(Math.random() * 1000/stale.drawingSpeed));
 	    } catch (InterruptedException e) {}
 	}
     }
