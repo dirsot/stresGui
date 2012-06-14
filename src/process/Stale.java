@@ -5,5 +5,5 @@ import org.jfree.data.time.TimeSeries;
 public class Stale{
     public static double lastValue = 100.0;
     public static TimeSeries series;
-    public static int drawingSpeed = 1;
+    public static int drawingSpeed = 10;
 }

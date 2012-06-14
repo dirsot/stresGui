@@ -20,6 +20,8 @@ public class ReadThread extends Thread {
             stale.lastValue = stale.lastValue * factor;
             final Millisecond now = new Millisecond();
             System.out.println("Now = " + now.toString());
+            if(stale.lastValue<3)
+                stale.lastValue = 100;
             stale.series.addOrUpdate(new Millisecond(), stale.lastValue);
             
             
