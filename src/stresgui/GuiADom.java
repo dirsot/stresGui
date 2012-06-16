@@ -1,4 +1,4 @@
-package stresgui;
+﻿package stresgui;
 
 import process.Stale;
 
