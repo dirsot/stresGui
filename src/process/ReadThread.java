@@ -13,13 +13,13 @@ public class ReadThread extends Thread {
         Millisecond start = new Millisecond();
 	while(true) {
             i++;
-	    System.out.println(i + " " + stale.lastValue);
+	    //System.out.println(i + " " + stale.lastValue);
             
             
             final double factor = 0.90 + 0.2 * Math.random();
             stale.lastValue = stale.lastValue * factor;
             final Millisecond now = new Millisecond();
-            System.out.println("Now = " + now.toString());
+            //System.out.println("Now = " + now.toString());
             if(stale.lastValue<3)
                 stale.lastValue = 100;
             stale.series.addOrUpdate(new Millisecond(), stale.lastValue);
