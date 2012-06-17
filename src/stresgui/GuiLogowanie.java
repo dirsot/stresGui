@@ -27,9 +27,8 @@ public class GuiLogowanie extends javax.swing.JDialog {
     DataInputStream in;
     Stale stale = new Stale();
     public static final GuiLogowanie dialog = new GuiLogowanie(new javax.swing.JFrame(), true);
-                
+
     GuiLogowanie() {
-         
     }
 
     /**
@@ -180,24 +179,24 @@ public class GuiLogowanie extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-         try {
-            FileInputStream fstream = new FileInputStream("files/osoby.txt");
-             in = new DataInputStream(fstream);
-             br = new BufferedReader(new InputStreamReader(in));
-        } catch (FileNotFoundException ex) {
-            System.out.println("nie ma pliku "+ ex);
-        }
-        String strLine,login,pass;
-        
+
         try {
-          
-            while((strLine = br.readLine())!=null){
+            FileInputStream fstream = new FileInputStream("files/osoby.txt");
+            in = new DataInputStream(fstream);
+            br = new BufferedReader(new InputStreamReader(in));
+        } catch (FileNotFoundException ex) {
+            System.out.println("nie ma pliku " + ex);
+        }
+        String strLine, login, pass;
+
+        try {
+
+            while ((strLine = br.readLine()) != null) {
                 String[] podzielone = strLine.split(",");
                 login = jTextField1.getText();
                 pass = jTextField2.getText();
-                
-                if(podzielone[0].equalsIgnoreCase(login) && podzielone[1].equalsIgnoreCase(pass)){
+
+                if (podzielone[0].equalsIgnoreCase(login) && podzielone[1].equalsIgnoreCase(pass)) {
                     System.out.println("jestes zalogowany");
                     Stale.fileName = login;
                     Stale.login = login;
@@ -207,18 +206,17 @@ public class GuiLogowanie extends javax.swing.JDialog {
                     dialog.setVisible(false);
                 }
             }
-            
+
             in.close();
         } catch (IOException ex) {
             Logger.getLogger(GuiLogowanie.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(!stale.isLogin){
+        if (!stale.isLogin) {
             jLabel7.setText("Nie udało sie poprawnie zalogować użytkownika");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

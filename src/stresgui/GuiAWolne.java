@@ -3,21 +3,13 @@ package stresgui;
 import process.MyEventClass;
 import process.Stale;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Agata
- */
 public class GuiAWolne extends javax.swing.JDialog {
 
     /**
      * Creates new form GuiAPraca
      */
     final static GuiAWolne dialog = new GuiAWolne(new javax.swing.JFrame(), true);
+
     public GuiAWolne(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -167,7 +159,7 @@ public class GuiAWolne extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                Stale.type = 1;
+        Stale.type = 1;
         Stale.question1 = jSlider1.getValue();
         Stale.question2 = jSlider2.getValue();
         Stale.question3 = jSlider3.getValue();
@@ -175,10 +167,10 @@ public class GuiAWolne extends javax.swing.JDialog {
         Stale.question5 = jSlider5.getValue();
         Stale.question6 = jSlider6.getValue();
         Stale.question7 = jSlider7.getValue();
-        
+
         MyEventClass event = new MyEventClass(this);
         Stale.fireSurveyEvent(event);
-        
+
         dialog.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -219,7 +211,7 @@ public class GuiAWolne extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                
+
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override

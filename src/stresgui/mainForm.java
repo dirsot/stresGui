@@ -38,8 +38,9 @@ public class mainForm extends javax.swing.JFrame {
     ReadThread draw = new ReadThread("Fiji");
     private ImageIcon defaultImage;
     private ImageIcon cloud = new ImageIcon("cloud.jpg");
-    
+
     public class LoginListener implements MyEventClassListener {
+
         private DataInputStream in;
         private BufferedReader br;
 
@@ -47,94 +48,105 @@ public class mainForm extends javax.swing.JFrame {
         public void loginSucces(EventObject e) {
             jLabel2.setText(Stale.login);
             try {
-            FileInputStream fstream = new FileInputStream("files/"+Stale.login+".txt");
-             in = new DataInputStream(fstream);
-             br = new BufferedReader(new InputStreamReader(in));
-        } catch (FileNotFoundException ex) {
-            System.out.println("nie ma pliku "+ ex);
-        }
-        String strLine,login,pass;
-        
-        try {
-            jComboBox1.addItem("Wybierz plik");
-            while((strLine = br.readLine())!=null){
-               jComboBox1.addItem(strLine);
+                FileInputStream fstream = new FileInputStream("files/" + Stale.login + ".txt");
+                in = new DataInputStream(fstream);
+                br = new BufferedReader(new InputStreamReader(in));
+            } catch (FileNotFoundException ex) {
+                System.out.println("nie ma pliku " + ex);
             }
-            
-            in.close();
-        } catch (IOException ex) {
-            Logger.getLogger(GuiLogowanie.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            String strLine, login, pass;
+
+            try {
+                jComboBox1.addItem("Wybierz plik");
+                while ((strLine = br.readLine()) != null) {
+                    jComboBox1.addItem(strLine);
+                }
+
+                in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(GuiLogowanie.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         @Override
         public void surveySucces(EventObject e) {
             jTextArea1.setText("");
-            if(Stale.question1==5){jTextArea1.append(Stale.answers[Stale.type][1]);}
-            if(Stale.question2==5){jTextArea1.append(Stale.answers[Stale.type][2]);}
-            if(Stale.question3==5){jTextArea1.append(Stale.answers[Stale.type][3]);}
-            if(Stale.question4==5){jTextArea1.append(Stale.answers[Stale.type][4]);}
-            if(Stale.question5==5){jTextArea1.append(Stale.answers[Stale.type][5]);}
-            if(Stale.question6==5){jTextArea1.append(Stale.answers[Stale.type][6]);}
-            if(Stale.question7==5){jTextArea1.append(Stale.answers[Stale.type][7]);}
-            
-           
+            if (Stale.question1 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][0]);
+                jTextArea1.append("\n");
+            }
+            if (Stale.question2 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][1]);
+                jTextArea1.append("\n");
+            }
+            if (Stale.question3 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][2]);
+                jTextArea1.append("\n");
+            }
+            if (Stale.question4 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][3]);
+                jTextArea1.append("\n");
+            }
+            if (Stale.question5 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][4]);
+                jTextArea1.append("\n");
+            }
+            if (Stale.question6 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][5]);
+                jTextArea1.append("\n");
+            }
+            if (Stale.question7 == 5) {
+                jTextArea1.append(Stale.answers[Stale.type][6]);
+                jTextArea1.append("\n");
+            }
+
+
         }
 
         @Override
         public void plotUpdate(EventObject e) {
-           jTextPane1.setText(""+Stale.max);
-           jTextPane2.setText(""+Stale.mean);
-           jTextPane3.setText(""+Stale.min);
-           jProgressBar1.setValue((int)(Stale.current/2));
-           
-            if(Stale.current>80){
+            jTextPane1.setText("" + Stale.max);
+            jTextPane2.setText("" + Stale.mean);
+            jTextPane3.setText("" + Stale.min);
+            jProgressBar1.setValue((int) (Stale.current / 2));
+
+            if (Stale.current > 80) {
                 jLabel9.setIcon(cloud);
             }
         }
-}
+    }
 
     public mainForm() throws IOException {
-        
+
         initComponents();
-        
+
         defaultImage = new ImageIcon("default.jpg");
         jLabel9.setText("");
-        jLabel9.setIcon(defaultImage); 
-        
-        
+        jLabel9.setIcon(defaultImage);
+
+
         Stale.addEventListener(new MyEventListener());
         Stale.addEventListener(new LoginListener());
         MyEventClass event = new MyEventClass(this);
- 
-                
-        LOG.addHandler(new FileHandler("./logFile.log",true));
+
+
+        LOG.addHandler(new FileHandler("./logFile.log", true));
         LOG.setLevel(Level.ALL);
         stale.series = new TimeSeries("Poziom stresu", Millisecond.class);
         final TimeSeriesCollection dataset = new TimeSeriesCollection(stale.series);
         final JFreeChart chart = createChart(dataset);
-        
+
         final ChartPanel chartPanel = new ChartPanel(chart);
 
-        
+
         chartPanel.setPreferredSize(new java.awt.Dimension(460, 360));
-        
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                
-                .addComponent(chartPanel)
-                .addGap(0, 0, 0))
-        );
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup().addComponent(chartPanel).addGap(0, 0, 0)));
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(chartPanel)
-                )
-        );
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addGap(0, 0, 0).addComponent(chartPanel)));
 
 
     }
@@ -148,33 +160,33 @@ public class mainForm extends javax.swing.JFrame {
             stale.series.add(new Millisecond(), stale.lastValue);
         }
     }
-    
-        private JFreeChart createChart(final XYDataset dataset) {
+
+    private JFreeChart createChart(final XYDataset dataset) {
         final JFreeChart result = ChartFactory.createTimeSeriesChart(
-            "Wykres poziomu stresu", 
-            "Czas", 
-            "Wartość",
-            dataset, 
-            true, 
-            true, 
-            false
-        );
+                "Wykres poziomu stresu",
+                "Czas",
+                "Wartość",
+                dataset,
+                true,
+                true,
+                false);
         final XYPlot plot = result.getXYPlot();
         ValueAxis axis = plot.getDomainAxis();
         axis.setAutoRange(true);
         axis.setFixedAutoRange(60000.0);  // 60 seconds
-        
+
         final Marker target = new ValueMarker(80.0);
         target.setPaint(Color.red);
         target.setLabel("Bezpieczny poziom stresu");
         target.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
         target.setLabelTextAnchor(TextAnchor.BOTTOM_RIGHT);
         plot.addRangeMarker(target);
-        
+
         axis = plot.getRangeAxis();
-        axis.setRange(0.0, 200.0); 
+        axis.setRange(0.0, 200.0);
         return result;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -473,14 +485,14 @@ public class mainForm extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         int returnVal = fc.showOpenDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             System.out.println("1");
             //This is where a real application would open the file.
-            LOG.log(Level.FINE,"My first log");
+            LOG.log(Level.FINE, "My first log");
         } else {
-            LOG.log(Level.WARNING,"Operacja anulowana");
+            LOG.log(Level.WARNING, "Operacja anulowana");
             System.out.println("2");
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -507,22 +519,22 @@ public class mainForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        
+
         String type = stale.fileName.subSequence(0, 3).toString();
-        
-        if(type.equalsIgnoreCase("DOM")){
+
+        if (type.equalsIgnoreCase("DOM")) {
             GuiADom dom = new GuiADom();
             dom.main();
-        }else if(type.equalsIgnoreCase("PRA")){
+        } else if (type.equalsIgnoreCase("PRA")) {
             GuiAPraca praca = new GuiAPraca();
             praca.main();
-        }else if(type.equalsIgnoreCase("WOL")){
+        } else if (type.equalsIgnoreCase("WOL")) {
             GuiAWolne wolne = new GuiAWolne();
             wolne.main();
-    }else{
-        System.out.println("nie ma, jest "+ type);
+        } else {
+            System.out.println("nie ma, jest " + type);
         }
-                
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -531,24 +543,23 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-         DataInputStream in;
-         BufferedReader br;
+        DataInputStream in;
+        BufferedReader br;
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             try {
-             Stale.fileName = (String)evt.getItem();   
-            FileInputStream fstream = new FileInputStream("files/"+evt.getItem());
-             in = new DataInputStream(fstream);
-             Stale.br = new BufferedReader(new InputStreamReader(in));
-        draw.start();
-     
-        } catch (FileNotFoundException ex) {
-            System.out.println("nie ma pliku "+ ex);
+                Stale.fileName = (String) evt.getItem();
+                FileInputStream fstream = new FileInputStream("files/" + evt.getItem());
+                in = new DataInputStream(fstream);
+                Stale.br = new BufferedReader(new InputStreamReader(in));
+                draw.start();
+
+            } catch (FileNotFoundException ex) {
+                System.out.println("nie ma pliku " + ex);
+            }
         }
-        } 
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     /**
