@@ -1,5 +1,6 @@
-﻿package stresgui;
+package stresgui;
 
+import process.MyEventClass;
 import process.Stale;
 
 /*
@@ -16,13 +17,12 @@ public class GuiADom extends javax.swing.JDialog {
     /**
      * Creates new form GuiAPraca
      */
+    final static GuiADom dialog = new GuiADom(new javax.swing.JFrame(), true);
     public GuiADom(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
-Stale stale;
     GuiADom() {
-         stale = new Stale();
     }
 
     /**
@@ -53,6 +53,25 @@ Stale stale;
         jLabel1.setText("<html>1. Czy jesteś zadowolony z ilości dzieci? <br /><br /><br />2. Czy masz wystarczającą ilość czasu wolnego w domu? <br /><br /><br />3. Czy jesteś usatysfakcjonowany swoim życiem seksualnym? <br /><br /><br />4. Czy Twoja zona ma pretensje, że za mało zarabiasz? <br /><br /><br />5. Czy Twoje dzieci się buntują? <br /><br /><br />6. Czy w Twojej rodzinie zdarzają się wypadki/ choroby śmiertelne? <br /><br /><br />7. jak często spotykasz się ze swoją dalszą rodziną?</html> ");
 
         jSlider1.setMaximum(5);
+        jSlider1.setValue(0);
+
+        jSlider2.setMaximum(5);
+        jSlider2.setValue(0);
+
+        jSlider3.setMaximum(5);
+        jSlider3.setValue(0);
+
+        jSlider4.setMaximum(5);
+        jSlider4.setValue(0);
+
+        jSlider5.setMaximum(5);
+        jSlider5.setValue(0);
+
+        jSlider6.setMaximum(5);
+        jSlider6.setValue(0);
+
+        jSlider7.setMaximum(5);
+        jSlider7.setValue(0);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Wypełnij ankietę na temat stresu w domu");
@@ -151,11 +170,20 @@ Stale stale;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        stale.question1 = jSlider1.getValue();
-        stale.question2 = jSlider2.getValue();
-        stale.question3 = jSlider3.getValue();
-        stale.question4 = jSlider4.getValue();
-        stale.question5 = jSlider5.getValue();
+        Stale.type = 0;
+        Stale.question1 = jSlider1.getValue();
+        Stale.question2 = jSlider2.getValue();
+        Stale.question3 = jSlider3.getValue();
+        Stale.question4 = jSlider4.getValue();
+        Stale.question5 = jSlider5.getValue();
+        Stale.question6 = jSlider6.getValue();
+        Stale.question7 = jSlider7.getValue();
+        
+        MyEventClass event = new MyEventClass(this);
+        Stale.fireSurveyEvent(event);
+        
+        dialog.setVisible(false);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -195,12 +223,12 @@ Stale stale;
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                GuiADom dialog = new GuiADom(new javax.swing.JFrame(), true);
+                
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        dialog.setVisible(false);
                     }
                 });
                 dialog.setVisible(true);

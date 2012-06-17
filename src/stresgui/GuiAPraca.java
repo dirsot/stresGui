@@ -1,5 +1,8 @@
 package stresgui;
 
+import process.MyEventClass;
+import process.Stale;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -14,6 +17,7 @@ public class GuiAPraca extends javax.swing.JDialog {
     /**
      * Creates new form GuiAPraca
      */
+    final static GuiAPraca dialog = new GuiAPraca(new javax.swing.JFrame(), true);
     public GuiAPraca(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -48,6 +52,27 @@ public class GuiAPraca extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("<html>1. Jak często odczuwa Pan/i stres w pracy? <br /><br /><br />2. Pana/i zdaniem poziom kontroli w pracy jest? <br /><br /><br />3. Czy obawiasz się zwolnienia? <br /><br /><br />4. Czy czujesz sie spełniony w pracy? <br /><br /><br />5. Czy często spotykach się często z osobami z pracy poza pracą? <br /><br /><br />6. Czy często pracujesz po godzinach? <br /><br /><br />7. Czy Twoja pensja Cię satysfakconuje?</html> ");
+
+        jSlider1.setMaximum(5);
+        jSlider1.setValue(0);
+
+        jSlider2.setMaximum(5);
+        jSlider2.setValue(0);
+
+        jSlider3.setMaximum(5);
+        jSlider3.setValue(0);
+
+        jSlider4.setMaximum(5);
+        jSlider4.setValue(0);
+
+        jSlider5.setMaximum(5);
+        jSlider5.setValue(0);
+
+        jSlider6.setMaximum(5);
+        jSlider6.setValue(0);
+
+        jSlider7.setMaximum(5);
+        jSlider7.setValue(0);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Wypełnij ankietę na temat stresu w pracy.");
@@ -143,7 +168,19 @@ public class GuiAPraca extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+                Stale.type = 1;
+        Stale.question1 = jSlider1.getValue();
+        Stale.question2 = jSlider2.getValue();
+        Stale.question3 = jSlider3.getValue();
+        Stale.question4 = jSlider4.getValue();
+        Stale.question5 = jSlider5.getValue();
+        Stale.question6 = jSlider6.getValue();
+        Stale.question7 = jSlider7.getValue();
+        
+        MyEventClass event = new MyEventClass(this);
+        Stale.fireSurveyEvent(event);
+        
+        dialog.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -183,12 +220,12 @@ public class GuiAPraca extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                GuiAPraca dialog = new GuiAPraca(new javax.swing.JFrame(), true);
+                
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        dialog.setVisible(false);
                     }
                 });
                 dialog.setVisible(true);

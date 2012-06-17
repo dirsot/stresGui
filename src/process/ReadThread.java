@@ -1,5 +1,8 @@
 package process;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jfree.data.time.Millisecond;
 
 public class ReadThread extends Thread {
@@ -9,25 +12,34 @@ public class ReadThread extends Thread {
 	super(str);
     }
     public void run() {
-        int i = 0;
-        Millisecond start = new Millisecond();
-	while(true) {
-            i++;
-	    //System.out.println(i + " " + stale.lastValue);
-            
-            
-            final double factor = 0.90 + 0.2 * Math.random();
-            stale.lastValue = stale.lastValue * factor;
-            final Millisecond now = new Millisecond();
-            //System.out.println("Now = " + now.toString());
-            if(stale.lastValue<3)
-                stale.lastValue = 100;
-            stale.series.addOrUpdate(new Millisecond(), stale.lastValue);
-            
-            
-            try {
+        String strLine;
+        int current=0;
+        MyEventClass event = new MyEventClass(this);
+        Stale.updatePlotEvent(event);
+        try {
+            while((strLine = Stale.br.readLine())!=null){
+                current = Integer.parseInt(strLine);
+                   stale.series.addOrUpdate(new Millisecond(), current);
+                   System.out.println(strLine);
+                   
+                   Stale.current = current;
+                   Stale.max = (Stale.max<current)?current:Stale.max;
+                   Stale.min = (Stale.min>current)?current:Stale.min;
+                   
+                   
+                   //if(current > Stale.max || current < Stale.min)
+                   {
+                       Stale.updatePlotEvent(event);
+                   }
+                   
+                   
+                   try {
 		sleep((int)(Math.random() * 1000/stale.drawingSpeed));
 	    } catch (InterruptedException e) {}
-	}
+                }
+        } catch (IOException ex) {
+            Logger.getLogger(ReadThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }  

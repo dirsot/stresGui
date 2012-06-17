@@ -1,5 +1,8 @@
 package stresgui;
 
+import process.MyEventClass;
+import process.Stale;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -14,6 +17,7 @@ public class GuiAWolne extends javax.swing.JDialog {
     /**
      * Creates new form GuiAPraca
      */
+    final static GuiAWolne dialog = new GuiAWolne(new javax.swing.JFrame(), true);
     public GuiAWolne(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -48,6 +52,27 @@ public class GuiAWolne extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("<html>1. Czy często palisz papierosy? <br /><br /><br />2. Czy często pijesz alkohol? <br /><br /><br />3. Czy częst uprawiasz sport? <br /><br /><br />4. cy często wyjeżdżasz poza miejscowość? <br /><br /><br />5. Czy często spędzasz czas na świeżym powietrzu? <br /><br /><br />6. Czy często jadasz w fast foodach? <br /><br /><br />7. Czy częto wykonujesz okresowe badania kontrolne?</html> ");
+
+        jSlider1.setMaximum(5);
+        jSlider1.setValue(0);
+
+        jSlider2.setMaximum(5);
+        jSlider2.setValue(0);
+
+        jSlider3.setMaximum(5);
+        jSlider3.setValue(0);
+
+        jSlider4.setMaximum(5);
+        jSlider4.setValue(0);
+
+        jSlider5.setMaximum(5);
+        jSlider5.setValue(0);
+
+        jSlider6.setMaximum(5);
+        jSlider6.setValue(0);
+
+        jSlider7.setMaximum(5);
+        jSlider7.setValue(0);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Wypełnij ankietę na temat spędzania czasu wolnego i przyzwyczajeń");
@@ -97,7 +122,7 @@ public class GuiAWolne extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(225, 225, 225)
                 .addComponent(jButton1)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
@@ -142,7 +167,19 @@ public class GuiAWolne extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+                Stale.type = 1;
+        Stale.question1 = jSlider1.getValue();
+        Stale.question2 = jSlider2.getValue();
+        Stale.question3 = jSlider3.getValue();
+        Stale.question4 = jSlider4.getValue();
+        Stale.question5 = jSlider5.getValue();
+        Stale.question6 = jSlider6.getValue();
+        Stale.question7 = jSlider7.getValue();
+        
+        MyEventClass event = new MyEventClass(this);
+        Stale.fireSurveyEvent(event);
+        
+        dialog.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -182,12 +219,12 @@ public class GuiAWolne extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                GuiAWolne dialog = new GuiAWolne(new javax.swing.JFrame(), true);
+                
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        dialog.setVisible(false);
                     }
                 });
                 dialog.setVisible(true);
