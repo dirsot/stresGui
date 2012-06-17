@@ -14,17 +14,25 @@ public class ReadThread extends Thread {
     public void run() {
         String strLine;
         int current=0;
+        int count = 0;
+        int sum = 0;
+        
         MyEventClass event = new MyEventClass(this);
         Stale.updatePlotEvent(event);
+        
         try {
             while((strLine = Stale.br.readLine())!=null){
                 current = Integer.parseInt(strLine);
                    stale.series.addOrUpdate(new Millisecond(), current);
                    System.out.println(strLine);
                    
+                   sum += current;
+                   count++;
+                   
                    Stale.current = current;
                    Stale.max = (Stale.max<current)?current:Stale.max;
                    Stale.min = (Stale.min>current)?current:Stale.min;
+                   Stale.mean = sum/count;
                    
                    
                    //if(current > Stale.max || current < Stale.min)
