@@ -1,6 +1,8 @@
 package stresgui;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.io.*;
@@ -13,11 +15,15 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.TextAnchor;
 
 import process.*;
 
@@ -31,6 +37,7 @@ public class mainForm extends javax.swing.JFrame {
     Stale stale = new Stale();
     ReadThread draw = new ReadThread("Fiji");
     private ImageIcon defaultImage;
+    private ImageIcon cloud = new ImageIcon("cloud.jpg");
     
     public class LoginListener implements MyEventClassListener {
         private DataInputStream in;
@@ -63,14 +70,15 @@ public class mainForm extends javax.swing.JFrame {
         @Override
         public void surveySucces(EventObject e) {
             jTextArea1.setText("");
-            if(Stale.question1==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question1]);}
-            if(Stale.question2==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question2]);}
-            if(Stale.question3==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question3]);}
-            if(Stale.question4==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question4]);}
-            if(Stale.question5==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question5]);}
-            if(Stale.question6==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question6]);}
-            if(Stale.question7==5){jTextArea1.append(Stale.answers[Stale.type][Stale.question7]);}
+            if(Stale.question1==5){jTextArea1.append(Stale.answers[Stale.type][1]);}
+            if(Stale.question2==5){jTextArea1.append(Stale.answers[Stale.type][2]);}
+            if(Stale.question3==5){jTextArea1.append(Stale.answers[Stale.type][3]);}
+            if(Stale.question4==5){jTextArea1.append(Stale.answers[Stale.type][4]);}
+            if(Stale.question5==5){jTextArea1.append(Stale.answers[Stale.type][5]);}
+            if(Stale.question6==5){jTextArea1.append(Stale.answers[Stale.type][6]);}
+            if(Stale.question7==5){jTextArea1.append(Stale.answers[Stale.type][7]);}
             
+           
         }
 
         @Override
@@ -79,6 +87,10 @@ public class mainForm extends javax.swing.JFrame {
            jTextPane2.setText(""+Stale.mean);
            jTextPane3.setText(""+Stale.min);
            jProgressBar1.setValue((int)(Stale.current/2));
+           
+            if(Stale.current>80){
+                jLabel9.setIcon(cloud);
+            }
         }
 }
 
@@ -90,6 +102,7 @@ public class mainForm extends javax.swing.JFrame {
         jLabel9.setText("");
         jLabel9.setIcon(defaultImage); 
         
+        
         Stale.addEventListener(new MyEventListener());
         Stale.addEventListener(new LoginListener());
         MyEventClass event = new MyEventClass(this);
@@ -97,7 +110,7 @@ public class mainForm extends javax.swing.JFrame {
                 
         LOG.addHandler(new FileHandler("./logFile.log",true));
         LOG.setLevel(Level.ALL);
-        stale.series = new TimeSeries("Random Data", Millisecond.class);
+        stale.series = new TimeSeries("Poziom stresu", Millisecond.class);
         final TimeSeriesCollection dataset = new TimeSeriesCollection(stale.series);
         final JFreeChart chart = createChart(dataset);
         
@@ -150,6 +163,14 @@ public class mainForm extends javax.swing.JFrame {
         ValueAxis axis = plot.getDomainAxis();
         axis.setAutoRange(true);
         axis.setFixedAutoRange(60000.0);  // 60 seconds
+        
+        final Marker target = new ValueMarker(80.0);
+        target.setPaint(Color.red);
+        target.setLabel("Bezpieczny poziom stresu");
+        target.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
+        target.setLabelTextAnchor(TextAnchor.BOTTOM_RIGHT);
+        plot.addRangeMarker(target);
+        
         axis = plot.getRangeAxis();
         axis.setRange(0.0, 200.0); 
         return result;
@@ -209,7 +230,7 @@ public class mainForm extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 661, Short.MAX_VALUE)
+            .addGap(0, 674, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,14 +402,10 @@ public class mainForm extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
-                                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
@@ -440,16 +457,15 @@ public class mainForm extends javax.swing.JFrame {
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addGap(18, 18, 18)
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26))))
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
