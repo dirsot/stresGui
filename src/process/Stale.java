@@ -12,10 +12,10 @@ public class Stale {
     public static TimeSeries series;
     public static int drawingSpeed = 1;
     public static String fileName = "___";
-    public static int min = 0;
-    public static int max = 0;
-    public static int mean = 0;
-    public static int current = 0;
+    public static double min = 0;
+    public static double max = 0;
+    public static double mean = 0;
+    public static double current = 0;
     public static String login;
     public static boolean isLogin = false;
     public static int type = 0;

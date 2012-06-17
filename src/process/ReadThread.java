@@ -15,16 +15,16 @@ public class ReadThread extends Thread {
 
     public void run() {
         String strLine;
-        int current = 0;
+        double current = 0;
         int count = 0;
-        int sum = 0;
+        double sum = 0;
 
         MyEventClass event = new MyEventClass(this);
         Stale.updatePlotEvent(event);
-
+        Stale.min = 1000;
         try {
             while ((strLine = Stale.br.readLine()) != null) {
-                current = Integer.parseInt(strLine);
+                current = Double.parseDouble(strLine);
                 stale.series.addOrUpdate(new Millisecond(), current);
                 System.out.println(strLine);
 
