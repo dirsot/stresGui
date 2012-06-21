@@ -34,11 +34,10 @@ public class mainForm extends javax.swing.JFrame {
      */
     final JFileChooser fc = new JFileChooser();
     static final Logger LOG = Logger.getLogger("MyLog");
-    Stale stale = new Stale();
     ReadThread draw = new ReadThread("Fiji");
     private ImageIcon defaultImage;
     private ImageIcon cloud = new ImageIcon("cloud.jpg");
-
+    public boolean isPlayed = false;
     public class LoginListener implements MyEventClassListener {
 
         private DataInputStream in;
@@ -134,8 +133,8 @@ public class mainForm extends javax.swing.JFrame {
 
         LOG.addHandler(new FileHandler("./logFile.log", true));
         LOG.setLevel(Level.ALL);
-        stale.series = new TimeSeries("Poziom stresu", Millisecond.class);
-        final TimeSeriesCollection dataset = new TimeSeriesCollection(stale.series);
+        Stale.series = new TimeSeries("Poziom stresu", Millisecond.class);
+        final TimeSeriesCollection dataset = new TimeSeriesCollection(Stale.series);
         final JFreeChart chart = createChart(dataset);
 
         final ChartPanel chartPanel = new ChartPanel(chart);
@@ -156,10 +155,10 @@ public class mainForm extends javax.swing.JFrame {
     public void actionPerformedButton(final ActionEvent e) {
         if (e.getActionCommand().equals("ADD_DATA")) {
             final double factor = 0.90 + 0.2 * Math.random();
-            stale.lastValue = stale.lastValue * factor;
+            Stale.lastValue = Stale.lastValue * factor;
             final Millisecond now = new Millisecond();
             //System.out.println("Now = " + now.toString());
-            stale.series.add(new Millisecond(), stale.lastValue);
+            Stale.series.add(new Millisecond(), Stale.lastValue);
         }
     }
 
@@ -222,6 +221,7 @@ public class mainForm extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
@@ -322,6 +322,13 @@ public class mainForm extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jTextArea1);
 
         jScrollPane1.setViewportView(jTextPane1);
+
+        jButton2.setText("PLAY");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Plik");
         jMenu1.add(jSeparator3);
@@ -436,7 +443,10 @@ public class mainForm extends javax.swing.JFrame {
                                     .addComponent(jScrollPane3)))
                             .addComponent(jLabel8)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jButton2))
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(56, 56, 56))))
@@ -472,7 +482,9 @@ public class mainForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -481,7 +493,7 @@ public class mainForm extends javax.swing.JFrame {
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
@@ -506,35 +518,35 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        stale.drawingSpeed = 1;
+        Stale.drawingSpeed = 1;
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        stale.drawingSpeed = 2;
+        Stale.drawingSpeed = 2;
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        stale.drawingSpeed = 5;
+        Stale.drawingSpeed = 5;
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        stale.drawingSpeed = 10;
+        Stale.drawingSpeed = 10;
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
 
-        String type = stale.fileName.subSequence(0, 3).toString();
+        String type = Stale.fileName.subSequence(0, 3).toString();
 
         if (type.equalsIgnoreCase("DOM")) {
             GuiADom dom = new GuiADom();
-            dom.main();
+            GuiADom.main();
         } else if (type.equalsIgnoreCase("PRA")) {
             GuiAPraca praca = new GuiAPraca();
-            praca.main();
+            GuiAPraca.main();
         } else if (type.equalsIgnoreCase("WOL")) {
             GuiAWolne wolne = new GuiAWolne();
-            wolne.main();
+            GuiAWolne.main();
         } else {
             System.out.println("nie ma, jest " + type);
         }
@@ -543,7 +555,7 @@ public class mainForm extends javax.swing.JFrame {
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         GuiLogowanie logowanie = new GuiLogowanie();
-        logowanie.main();
+        GuiLogowanie.main();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -555,19 +567,37 @@ public class mainForm extends javax.swing.JFrame {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             try {
                 draw.stop();
-                stale.series.clear();
+                Stale.series.clear();
                 draw = new ReadThread("");
                 Stale.fileName = (String) evt.getItem();
                 FileInputStream fstream = new FileInputStream("files/" + evt.getItem());
                 in = new DataInputStream(fstream);
                 Stale.br = new BufferedReader(new InputStreamReader(in));
-                draw.start();
+                isPlayed = false;
+                jButton2.setText("PLAY");
 
             } catch (FileNotFoundException ex) {
                 System.out.println("nie ma pliku " + ex);
             }
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        if((jButton2.getText()).equalsIgnoreCase("play")){
+            if(isPlayed){
+                draw.resume();
+            }else{
+                draw.start();
+                isPlayed = true;
+            }
+            jButton2.setText("PAUSE");
+            
+        }else{
+            draw.suspend();
+            jButton2.setText("PLAY");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -576,6 +606,7 @@ public class mainForm extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 try {
                     new mainForm().setVisible(true);
@@ -587,6 +618,7 @@ public class mainForm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

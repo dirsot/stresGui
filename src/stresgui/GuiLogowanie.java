@@ -211,7 +211,7 @@ public class GuiLogowanie extends javax.swing.JDialog {
         } catch (IOException ex) {
             Logger.getLogger(GuiLogowanie.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (!stale.isLogin) {
+        if (!Stale.isLogin) {
             jLabel7.setText("Nie udało sie poprawnie zalogować użytkownika");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -255,6 +255,7 @@ public class GuiLogowanie extends javax.swing.JDialog {
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 

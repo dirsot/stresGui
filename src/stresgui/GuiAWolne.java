@@ -210,6 +210,7 @@ public class GuiAWolne extends javax.swing.JDialog {
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
 
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {

@@ -9,6 +9,6 @@ public class StresGui {
      */
     public static void main(String[] args) throws IOException {
         mainForm window = new mainForm();
-        window.main();
+        mainForm.main();
     }
 }
