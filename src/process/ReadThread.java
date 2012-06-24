@@ -40,7 +40,7 @@ public class ReadThread extends Thread {
                 Stale.current = current;
                 Stale.max = dwaMiejscaPoPrzecinku((Stale.max < current) ? current : Stale.max);
                 Stale.min = dwaMiejscaPoPrzecinku((Stale.min > current) ? current : Stale.min);
-                Stale.mean = dwaMiejscaPoPrzecinku(sum / count);
+               Stale.mean = dwaMiejscaPoPrzecinku(sum / count);
 
 
                 //if(current > Stale.max || current < Stale.min)
@@ -61,11 +61,18 @@ public class ReadThread extends Thread {
     }
     /**
      * 
-     * @param d
+     * @param 
      * @return 
      */
     public double dwaMiejscaPoPrzecinku(double d) {
-        DecimalFormat format = new DecimalFormat("#.##");
-        return Double.valueOf(format.format(d));
+        try{
+            DecimalFormat format = new DecimalFormat("#.##");
+            return Double.valueOf(format.format(d));
+        }
+        catch(NumberFormatException ex){
+        System.out.println("dupa");
+        return(1.0);
+        }
+        
     }
 }

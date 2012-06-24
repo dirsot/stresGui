@@ -53,7 +53,7 @@ public class mainForm extends javax.swing.JFrame {
         public void loginSucces(EventObject e) {
             jLabel2.setText(Stale.login);
             try {
-                FileInputStream fstream = new FileInputStream("files/" + Stale.login + ".txt");
+                FileInputStream fstream = new FileInputStream("C:/Users/Agata/Desktop/Stres/trunk/files/" + Stale.login + ".txt");
                 in = new DataInputStream(fstream);
                 br = new BufferedReader(new InputStreamReader(in));
             } catch (FileNotFoundException ex) {
