@@ -16,9 +16,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+L"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="/home/stive/NetBeansProjects/stresGui/src/stresgui/img/openIcon.jpg"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Zaloguj/Zarejestruj"/>
               </Properties>
               <Events>
@@ -44,9 +41,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+W"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="/home/stive/NetBeansProjects/stresGui/src/stresgui/img/closeIcon.jpg"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Zako&#x144;cz"/>
               </Properties>

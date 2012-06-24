@@ -36,7 +36,13 @@ public class mainForm extends javax.swing.JFrame {
     static final Logger LOG = Logger.getLogger("MyLog");
     ReadThread draw = new ReadThread("Fiji");
     private ImageIcon defaultImage;
-    private ImageIcon cloud = new ImageIcon("cloud.jpg");
+    private ImageIcon cloud1 = new ImageIcon("sun2.jpg");
+    private ImageIcon cloud2 = new ImageIcon("sun3.jpg");
+    private ImageIcon cloud3 = new ImageIcon("sun4.jpg");
+    private ImageIcon cloud4 = new ImageIcon("sun5.jpg");
+    private ImageIcon cloud5 = new ImageIcon("sun6.jpg");
+    private ImageIcon cloud6 = new ImageIcon("sun7.jpg");
+    private ImageIcon cloud7 = new ImageIcon("sun8.jpg");
     public boolean isPlayed = false;
     public class LoginListener implements MyEventClassListener {
 
@@ -110,8 +116,28 @@ public class mainForm extends javax.swing.JFrame {
             jProgressBar1.setValue((int) (Stale.current / 2));
 
             if (Stale.current > 99) {
-                jLabel9.setIcon(cloud);
-            }else{
+                jLabel9.setIcon(cloud1);
+            }
+            else if (Stale.current > 129) {
+                jLabel9.setIcon(cloud2);
+            }
+            else if (Stale.current > 149) {
+                jLabel9.setIcon(cloud3);
+            }
+            else if (Stale.current > 169) {
+                jLabel9.setIcon(cloud4);
+            }
+            else if (Stale.current > 189) {
+                jLabel9.setIcon(cloud5);
+            }
+            else if (Stale.current > 219) {
+                jLabel9.setIcon(cloud6);
+            }
+            else if (Stale.current > 229) {
+                jLabel9.setIcon(cloud7);
+            }
+            
+            else{
                 jLabel9.setIcon(defaultImage);
             }
         }
@@ -121,7 +147,7 @@ public class mainForm extends javax.swing.JFrame {
 
         initComponents();
 
-        defaultImage = new ImageIcon("default.jpg");
+        defaultImage = new ImageIcon("sun1.jpg");
         jLabel9.setText("");
         jLabel9.setIcon(defaultImage);
 
