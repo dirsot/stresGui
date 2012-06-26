@@ -46,7 +46,7 @@ public class ReadThread extends Thread {
                 Stale.current = current;
                 Stale.max = dwaMiejscaPoPrzecinku((Stale.max < current) ? current : Stale.max);
                 Stale.min = dwaMiejscaPoPrzecinku((Stale.min > current) ? current : Stale.min);
-                Stale.mean = dwaMiejscaPoPrzecinku(sum / count);
+               Stale.mean = dwaMiejscaPoPrzecinku(sum / count);
 
                 
                 if((i%10) != 0){
@@ -98,7 +98,7 @@ public class ReadThread extends Thread {
     }
     /**
      * 
-     * @param d
+     * @param 
      * @return 
      */
     public double dwaMiejscaPoPrzecinku(double d) {
