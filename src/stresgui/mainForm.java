@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.io.*;
+import java.text.Normalizer;
 import java.util.EventObject;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -36,7 +37,7 @@ public class mainForm extends javax.swing.JFrame {
     static final Logger LOG = Logger.getLogger("MyLog");
     ReadThread draw = new ReadThread("Fiji");
     private ImageIcon defaultImage;
-    private ImageIcon cloud1 = new ImageIcon("sun2.jpg");
+    private ImageIcon cloud = new ImageIcon("cloud.jpg");
     private ImageIcon cloud2 = new ImageIcon("sun3.jpg");
     private ImageIcon cloud3 = new ImageIcon("sun4.jpg");
     private ImageIcon cloud4 = new ImageIcon("sun5.jpg");
@@ -44,6 +45,9 @@ public class mainForm extends javax.swing.JFrame {
     private ImageIcon cloud6 = new ImageIcon("sun7.jpg");
     private ImageIcon cloud7 = new ImageIcon("sun8.jpg");
     public boolean isPlayed = false;
+    public int ourScaleStress = 0;
+    
+    
     public class LoginListener implements MyEventClassListener {
 
         private DataInputStream in;
@@ -54,6 +58,7 @@ public class mainForm extends javax.swing.JFrame {
             jLabel2.setText(Stale.login);
             try {
                 FileInputStream fstream = new FileInputStream("files/" + Stale.login + ".txt");
+                
                 in = new DataInputStream(fstream);
                 br = new BufferedReader(new InputStreamReader(in));
             } catch (FileNotFoundException ex) {
@@ -114,40 +119,45 @@ public class mainForm extends javax.swing.JFrame {
             jTextPane2.setText("" + Stale.mean);
             jTextPane3.setText("" + Stale.min);
             jProgressBar1.setValue((int) (Stale.current / 2));
-
-            if (Stale.current > 99) {
-                jLabel9.setIcon(cloud1);
-            }
-            else if (Stale.current > 129) {
-                jLabel9.setIcon(cloud2);
-            }
-            else if (Stale.current > 149) {
-                jLabel9.setIcon(cloud3);
-            }
-            else if (Stale.current > 169) {
-                jLabel9.setIcon(cloud4);
-            }
-            else if (Stale.current > 189) {
-                jLabel9.setIcon(cloud5);
-            }
-            else if (Stale.current > 219) {
-                jLabel9.setIcon(cloud6);
-            }
-            else if (Stale.current > 229) {
-                jLabel9.setIcon(cloud7);
-            }
-            
+            jSlider1.setValue(Stale.ourScaleStress);
+//
+//            if (Stale.current > 99) {
+//                jLabel9.setIcon(cloud1);
+//            }
+//            else if (Stale.current > 129) {
+//                jLabel9.setIcon(cloud2);
+//            }
+//            else if (Stale.current > 149) {
+//                jLabel9.setIcon(cloud3);
+//            }
+//            else if (Stale.current > 169) {
+//                jLabel9.setIcon(cloud4);
+//            }
+//            else if (Stale.current > 189) {
+//                jLabel9.setIcon(cloud5);
+//            }
+//            else if (Stale.current > 219) {
+//                jLabel9.setIcon(cloud6);
+//            }
+//            else if (Stale.current > 229) {
+//                jLabel9.setIcon(cloud7);
+//            }
+          if(Stale.current>99){
+              jLabel9.setIcon(cloud);
+          }  
             else{
                 jLabel9.setIcon(defaultImage);
             }
         }
+        
+        
     }
 
     public mainForm() throws IOException {
 
         initComponents();
 
-        defaultImage = new ImageIcon("sun1.jpg");
+        defaultImage = new ImageIcon("default.jpg");
         jLabel9.setText("");
         jLabel9.setIcon(defaultImage);
 
@@ -159,9 +169,11 @@ public class mainForm extends javax.swing.JFrame {
 
         LOG.addHandler(new FileHandler("./logFile.log", true));
         LOG.setLevel(Level.ALL);
-        Stale.series = new TimeSeries("Poziom stresu", Millisecond.class);
-        final TimeSeriesCollection dataset = new TimeSeriesCollection(Stale.series);
-        final JFreeChart chart = createChart(dataset);
+        Stale.series.addSeries(Stale.s1);
+        Stale.series.addSeries(Stale.s2);
+        System.out.println(345);
+        //final TimeSeriesCollection dataset = new TimeSeriesCollection(Stale.series);
+        final JFreeChart chart = createChart();
 
         final ChartPanel chartPanel = new ChartPanel(chart);
 
@@ -184,16 +196,16 @@ public class mainForm extends javax.swing.JFrame {
             Stale.lastValue = Stale.lastValue * factor;
             final Millisecond now = new Millisecond();
             //System.out.println("Now = " + now.toString());
-            Stale.series.add(new Millisecond(), Stale.lastValue);
+            Stale.series.getSeries(0).add(new Millisecond(), Stale.lastValue);
         }
     }
 
-    private JFreeChart createChart(final XYDataset dataset) {
+    private JFreeChart createChart() {
         final JFreeChart result = ChartFactory.createTimeSeriesChart(
                 "Wykres poziomu stresu",
                 "Czas",
                 "G [mikro S]",
-                dataset,
+                Stale.series,
                 true,
                 true,
                 false);
@@ -248,6 +260,7 @@ public class mainForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jButton2 = new javax.swing.JButton();
+        jSlider1 = new javax.swing.JSlider();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
@@ -263,6 +276,7 @@ public class mainForm extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -272,7 +286,7 @@ public class mainForm extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 653, Short.MAX_VALUE)
+            .addGap(0, 607, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,11 +370,18 @@ public class mainForm extends javax.swing.JFrame {
             }
         });
 
+        jSlider1.setMaximum(5);
+        jSlider1.setMinorTickSpacing(1);
+        jSlider1.setOrientation(javax.swing.JSlider.VERTICAL);
+        jSlider1.setPaintLabels(true);
+        jSlider1.setPaintTicks(true);
+        jSlider1.setSnapToTicks(true);
+        jSlider1.setValue(0);
+
         jMenu1.setText("Plik");
         jMenu1.add(jSeparator3);
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem7.setIcon(new javax.swing.ImageIcon("/home/stive/NetBeansProjects/stresGui/src/stresgui/img/openIcon.jpg")); // NOI18N
         jMenuItem7.setText("Zaloguj/Zarejestruj");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -381,7 +402,6 @@ public class mainForm extends javax.swing.JFrame {
         jMenu1.add(jSeparator1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setIcon(new javax.swing.ImageIcon("/home/stive/NetBeansProjects/stresGui/src/stresgui/img/closeIcon.jpg")); // NOI18N
         jMenuItem2.setText("Zakończ");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -433,6 +453,15 @@ public class mainForm extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Info");
+
+        jMenuItem8.setText("Autorzy");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem8);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -452,11 +481,13 @@ public class mainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
                             .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
@@ -467,15 +498,16 @@ public class mainForm extends javax.swing.JFrame {
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                                     .addComponent(jScrollPane2)
                                     .addComponent(jScrollPane3)))
-                            .addComponent(jLabel8)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
                                 .addComponent(jButton2))
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(56, 56, 56))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42)
+                                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(22, 22, 22))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -504,23 +536,28 @@ public class mainForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jSlider1.getAccessibleContext().setAccessibleName("scale");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -593,7 +630,7 @@ public class mainForm extends javax.swing.JFrame {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             try {
                 draw.stop();
-                Stale.series.clear();
+                Stale.series.getSeries(0).clear();
                 draw = new ReadThread("");
                 Stale.fileName = (String) evt.getItem();
                 FileInputStream fstream = new FileInputStream("files/" + evt.getItem());
@@ -624,6 +661,11 @@ public class mainForm extends javax.swing.JFrame {
             jButton2.setText("PLAY");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        Autors autor = new Autors();
+        Autors.main();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -667,6 +709,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
@@ -677,6 +720,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JSlider jSlider1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;

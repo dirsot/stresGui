@@ -77,7 +77,7 @@ public class GuiLogowanie extends javax.swing.JDialog {
 
         jLabel6.setText("Hasło:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Agata\\Desktop\\Stres\\trunk\\src\\stresgui\\img\\lock.png")); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon("/home/stive/NetBeansProjects/stresGui/src/stresgui/img/lock.png")); // NOI18N
         jButton1.setText("Zaloguj się");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

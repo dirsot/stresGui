@@ -29,11 +29,17 @@ public class ReadThread extends Thread {
         MyEventClass event = new MyEventClass(this);
         Stale.updatePlotEvent(event);
         Stale.min = 1000;
+        Millisecond lastMili = new Millisecond();
+        int i = 10;
+        double sumOf10Last = 0D;
         try {
             while ((strLine = Stale.br.readLine()) != null) {
                 current = Double.parseDouble(strLine);
-                Stale.series.addOrUpdate(new Millisecond(), current);
-                System.out.println(strLine);
+                
+
+                Stale.series.getSeries(0).addOrUpdate(new Millisecond(), current);
+                
+                //System.out.println(strLine);
 
                 sum += current;
                 count++;
@@ -42,7 +48,38 @@ public class ReadThread extends Thread {
                 Stale.min = dwaMiejscaPoPrzecinku((Stale.min > current) ? current : Stale.min);
                 Stale.mean = dwaMiejscaPoPrzecinku(sum / count);
 
-
+                
+                if((i%10) != 0){
+                    sumOf10Last += current;
+                    i++;
+                }else{
+                    i=1;
+                    sumOf10Last += current;
+                    Stale.series.getSeries(1).addOrUpdate(lastMili, sumOf10Last/10);
+                    lastMili = new Millisecond();
+                    Stale.series.getSeries(1).addOrUpdate(lastMili, sumOf10Last/10);
+                    
+                
+                
+                Stale.ourScaleStress = (int)((sumOf10Last/10 - Stale.min)/(Stale.max - Stale.min)*100);
+                
+                System.out.println(Stale.ourScaleStress);
+                if(Stale.ourScaleStress<20){
+                    Stale.ourScaleStress = 0;
+                }else if(Stale.ourScaleStress<40){
+                    Stale.ourScaleStress = 2;
+                }else if(Stale.ourScaleStress<60){
+                    Stale.ourScaleStress = 3;
+                }else if(Stale.ourScaleStress<80){
+                    Stale.ourScaleStress = 4;
+                }else{
+                    Stale.ourScaleStress = 5;
+                }
+                
+                sumOf10Last = 0;
+                }
+                
+                System.out.println(Stale.ourScaleStress);
                 //if(current > Stale.max || current < Stale.min)
                 {
                     Stale.updatePlotEvent(event);
@@ -66,6 +103,11 @@ public class ReadThread extends Thread {
      */
     public double dwaMiejscaPoPrzecinku(double d) {
         DecimalFormat format = new DecimalFormat("#.##");
+        try{
         return Double.valueOf(format.format(d));
+        }catch(Exception e){
+        System.out.println("error " + e);
+        }
+        return 10;
     }
 }

@@ -8,7 +8,6 @@ public class StresGui {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        mainForm window = new mainForm();
         mainForm.main();
     }
 }
